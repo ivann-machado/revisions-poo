@@ -31,6 +31,14 @@
 			$this->id = $id;
 		}
 
+		public function getCategoryId(): int {
+			return $this->category_id;
+		}
+
+		public function setCategoryId(int $category_id): void {
+			$this->category_id = $category_id;
+		}
+
 		public function getName(): string {
 			return $this->name;
 		}
