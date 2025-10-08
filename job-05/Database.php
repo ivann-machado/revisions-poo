@@ -19,7 +19,7 @@ class Database {
 			return self::$pdo;
 		}
 		catch (PDOException $e) {
-			return "Error: MySQL database connection failed: " . $e->getMessage();
+			return 'Error: MySQL database connection failed: ' . $e->getMessage();
 		}
 	}
 
