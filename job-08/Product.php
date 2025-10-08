@@ -130,5 +130,17 @@ h<?php
 			}
 			return false;
 		}
+
+		public static function findAll(): array {
+			$pdo = Database::connect();
+			$stmt = $pdo->query('SELECT * FROM `product`');
+			$results = $stmt->fetchAll();
+
+			$products = [];
+			foreach ($results as $result) {
+				$products[] = new Product($result['id'], $result['category_id'], $result['name'], explode(',', $result['photo']), $result['price'], $result['description'], $result['quantity'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
+			}
+			return $products;
+		}
 	}
 ?>
