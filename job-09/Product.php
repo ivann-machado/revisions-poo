@@ -37,7 +37,7 @@ h<?php
 			return $this->category_id;
 		}
 
-		public function setCategoryId(int $category_id): void {
+		public function setCategory_id(int $category_id): void {
 			$this->category_id = $category_id;
 		}
 
