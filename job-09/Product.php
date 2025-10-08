@@ -142,5 +142,26 @@ h<?php
 			}
 			return $products;
 		}
+
+		public function create(): bool|Product {
+			$pdo = Database::connect();
+			$stmt = $pdo->prepare('INSERT INTO `product` (`category_id`, `name`, `photo`, `price`, `description`, `quantity`, `createdAt`, `updatedAt`) VALUES (:category_id, :name, :photo, :price, :description, :quantity, :createdAt, :updatedAt)');
+			$result = $stmt->execute([
+				'category_id' => $this->category_id,
+				'name' => $this->name,
+				'photo' => implode(',', $this->photo),
+				'price' => $this->price,
+				'description' => $this->description,
+				'quantity' => $this->quantity,
+				'createdAt' => $this->createdAt->format('d-m-Y H:i:s'),
+				'updatedAt' => $this->updatedAt->format('d-m-Y H:i:s')
+			]);
+
+			if ($result) {
+				$this->id = (int)$pdo->lastInsertId();
+				return $this;
+			}
+			return false;
+		}
 	}
 ?>
