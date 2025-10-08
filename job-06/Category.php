@@ -53,5 +53,12 @@
 		public function setUpdatedAt(DateTime $updatedAt): void {
 			$this->updatedAt = $updatedAt;
 		}
+
+		public function getProducts(): array {
+			$pdo = Database::connect();
+			$stmt = $pdo->prepare('SELECT * FROM products WHERE category_id = ?');
+			$stmt->execute([$this->id]);
+			return $stmt->fetchAll();
+		}
 	}
 ?>
