@@ -125,8 +125,8 @@ h<?php
 			$result = $stmt->fetch();
 
 			if ($result) {
-				$self->hydrate($result);
-				return $self;
+				$this->hydrate($result);
+				return $this;
 			}
 			return false;
 		}
