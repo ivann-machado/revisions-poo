@@ -10,7 +10,7 @@ $options = [
 ];
 $pdo = new PDO($dsn, 'root', '', $options);
 
-$stmt = $this->pdo->prepare('SELECT * FROM `product` WHERE `id` = :id');
+$stmt = $pdo->prepare('SELECT * FROM `product` WHERE `id` = :id');
 $stmt->execute(['id' => 7]);
 $result = $stmt->fetch();
 
