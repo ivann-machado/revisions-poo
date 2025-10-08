@@ -163,5 +163,21 @@ h<?php
 			}
 			return false;
 		}
+
+		public function update(): void {
+			$pdo = Database::connect();
+			$stmt = $pdo->prepare('UPDATE `product` SET `category_id` = :category_id, `name` = :name, `photo` = :photo, `price` = :price, `description` = :description, `quantity` = :quantity, `createdAt` = :createdAt, `updatedAt` = :updatedAt WHERE `id` = :id');
+			$stmt->execute([
+				'id' => $this->id,
+				'category_id' => $this->category_id,
+				'name' => $this->name,
+				'photo' => implode(',', $this->photo),
+				'price' => $this->price,
+				'description' => $this->description,
+				'quantity' => $this->quantity,
+				'createdAt' => $this->createdAt->format('d-m-Y H:i:s'),
+				'updatedAt' => $this->updatedAt->format('d-m-Y H:i:s')
+			]);
+		}
 	}
 ?>
