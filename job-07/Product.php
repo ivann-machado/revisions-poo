@@ -12,15 +12,17 @@ h<?php
 
 
 		function __construct(int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
-			$this->id = $id;
-			$this->category_id = $category_id;
-			$this->name = $name;
-			$this->photo = $photo;
-			$this->price = $price;
-			$this->description = $description;
-			$this->quantity = $quantity;
-			$this->createdAt = $createdAt;
-			$this->updatedAt = $updatedAt;
+			$this->hydrate([
+				'id' => $id,
+				'category_id' => $category_id,
+				'name' => $name,
+				'photo' => $photo,
+				'price' => $price,
+				'description' => $description,
+				'quantity' => $quantity,
+				'createdAt' => $createdAt,
+				'updatedAt' => $updatedAt
+			]);
 		}
 
 		public function getId(): int {
@@ -31,7 +33,7 @@ h<?php
 			$this->id = $id;
 		}
 
-		public function getCategoryId(): int {
+		public function getCategory_id(): int {
 			return $this->category_id;
 		}
 
@@ -105,6 +107,28 @@ h<?php
 				return new Category($result['id'], $result['name'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
 			}
 			return null;
+		}
+
+		private function hydrate(array $data): void {
+			foreach ($data as $key => $value) {
+				$method = 'set' . ucfirst($key);
+				if (method_exists($this, $method)) {
+					$this->$method($value);
+				}
+			}
+		}
+
+		public function findOneById(int $id): Boolean|Product {
+			$pdo = Database::connect();
+			$stmt = $pdo->prepare('SELECT * FROM `product` WHERE `id` = :id');
+			$stmt->execute(['id' => $id]);
+			$result = $stmt->fetch();
+
+			if ($result) {
+				$self->hydrate($result);
+				return $self;
+			}
+			return false;
 		}
 	}
 ?>
