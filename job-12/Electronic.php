@@ -68,6 +68,16 @@ class Electronic extends Product {
 		return false;
 	}
 
+	public static function findAll(): array {
+		$pdo = Database::connect();
+		$stmt = $pdo->query('SELECT p.*, e.brand, e.warranty_fee FROM product p JOIN electronic e ON p.id = e.product_id');
+		$results = $stmt->fetchAll();
 
+		$electronics = [];
+		foreach ($results as $result) {
+			$electronics[] = new Electronic($result['brand'], $result['warranty_fee'], $result['id'], $result['category_id'], $result['name'], explode(',', $result['photo']), $result['price'], $result['description'], $result['quantity'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
+		}
+		return $electronics;
+	}
 }
 ?>
