@@ -62,6 +62,8 @@ class Clothing extends AbstractProduct implements SockableInterface {
 				return $this;
 			}
 			return false;
+		}
+		return false;
 	}
 
 	public function update(): void {

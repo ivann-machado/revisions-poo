@@ -62,6 +62,8 @@ class Clothing extends Product {
 				return $this;
 			}
 			return false;
+		}
+		return false;
 	}
 
 	public function update(): void {
