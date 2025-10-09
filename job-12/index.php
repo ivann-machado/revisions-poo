@@ -2,6 +2,8 @@
 require './Database.php';
 require './Category.php';
 require './Product.php';
+require './Clothing.php';
+require './Electronic.php';
 
 $pdo = Database::connect();
 
