@@ -1,14 +1,14 @@
 <?php
-	class Product  {
-		private int $id;
-		private int $category_id;
-		private string $name;
-		private array $photo;
-		private int $price;
-		private string $description;
-		private int $quantity;
-		private DateTime $createdAt;
-		private DateTime $updatedAt;
+	abstract class AbstractProduct  {
+		protected int $id;
+		protected int $category_id;
+		protected string $name;
+		protected array $photo;
+		protected int $price;
+		protected string $description;
+		protected int $quantity;
+		protected DateTime $createdAt;
+		protected DateTime $updatedAt;
 
 
 		function __construct(int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
@@ -109,7 +109,7 @@
 			return null;
 		}
 
-		private function hydrate(array $data): void {
+		protected function hydrate(array $data): void {
 			foreach ($data as $key => $value) {
 				$method = 'set' . ucfirst($key);
 				if (method_exists($this, $method)) {
@@ -118,30 +118,9 @@
 			}
 		}
 
-		public function findOneById(int $id): Bool|Product {
-			$pdo = Database::connect();
-			$stmt = $pdo->prepare('SELECT * FROM `product` WHERE `id` = :id');
-			$stmt->execute(['id' => $id]);
-			$result = $stmt->fetch();
+		abstract public function findOneById(int $id): Bool|Product;
 
-			if ($result) {
-				$this->hydrate($result);
-				return $this;
-			}
-			return false;
-		}
-
-		public static function findAll(): array {
-			$pdo = Database::connect();
-			$stmt = $pdo->query('SELECT * FROM `product`');
-			$results = $stmt->fetchAll();
-
-			$products = [];
-			foreach ($results as $result) {
-				$products[] = new Product($result['id'], $result['category_id'], $result['name'], explode(',', $result['photo']), $result['price'], $result['description'], $result['quantity'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
-			}
-			return $products;
-		}
+		abstract public static function findAll(): array;
 
 		public function create(): bool|Product {
 			$pdo = Database::connect();
