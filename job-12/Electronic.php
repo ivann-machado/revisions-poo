@@ -44,5 +44,17 @@ class Electronic extends Product {
 		return false;
 	}
 
+	public function findOneById(int $id): Bool|Electronic {
+		$pdo = Database::connect();
+		$stmt = $pdo->prepare('SELECT p.*, e.brand, e.warranty_fee FROM product p JOIN electronic e ON p.id = e.product_id WHERE p.id = :id');
+		$stmt->execute(['id' => $id]);
+		$result = $stmt->fetch();
+
+		if ($result) {
+			$this->hydrate($result);
+			return $this;
+		}
+		return false;
+	}
 }
 ?>
