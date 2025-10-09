@@ -26,5 +26,23 @@ class Electronic extends Product {
 	public function setWarranty_fee(int $warranty_fee): void {
 		$this->warranty_fee = $warranty_fee;
 	}
+
+	public function create(): Bool|Electronic {
+		if(parent::create() instanceof Product) {
+			$pdo = Database::connect();
+			$req = $pdo->prepare('INSERT INTO electronic (product_id, brand, warranty_fee) VALUES (:product_id, :brand, :warranty_fee)');
+			$params = [
+				'product_id' => $this->$id,
+				'brand' => $this->$brand,
+				'warranty_fee' => $this->$warranty_fee
+			];
+			if($req->execute($params)) {
+				return $this;
+			}
+			return false;
+		}
+		return false;
+	}
+
 }
 ?>
