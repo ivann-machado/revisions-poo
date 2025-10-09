@@ -1,5 +1,5 @@
 <?php
-class Clothing extends AbstractProduct {
+class Clothing extends AbstractProduct implements SockableInterface {
 	private string $size;
 	private string $color;
 	private string $type;
@@ -99,6 +99,19 @@ class Clothing extends AbstractProduct {
 			$clothings[] = new Clothing($result['size'], $result['color'], $result['type'], $result['material_fee'], $result['id'], $result['category_id'], $result['name'], explode(',', $result['photo']), $result['price'], $result['description'], $result['quantity'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
 		}
 		return $clothings;
+	}
+	public function addStocks(int $quantity): self {
+		$this->quantity += $quantity;
+		$this->update();
+		return $this;
+	}
+
+	public function removeStocks(): self {
+		if ($this->quantity > 0) {
+			$this->quantity -= 1;
+			$this->update();
+		}
+		return $this;
 	}
 }
 ?>
