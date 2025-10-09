@@ -118,7 +118,7 @@ h<?php
 			}
 		}
 
-		public function findOneById(int $id): Boolean|Product {
+		public function findOneById(int $id): bool|Product {
 			$pdo = Database::connect();
 			$stmt = $pdo->prepare('SELECT * FROM `product` WHERE `id` = :id');
 			$stmt->execute(['id' => $id]);
