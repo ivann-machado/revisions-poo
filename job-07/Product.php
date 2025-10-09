@@ -1,4 +1,4 @@
-h<?php
+<?php
 	class Product  {
 		private int $id;
 		private int $category_id;
