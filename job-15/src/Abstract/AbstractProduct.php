@@ -1,6 +1,7 @@
 <?php
 namespace App\Abstract;
 use DateTime;
+use App\Database;
 
 abstract class AbstractProduct  {
 	protected ?int $id;
