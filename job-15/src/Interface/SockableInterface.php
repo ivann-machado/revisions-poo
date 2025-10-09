@@ -1,5 +1,5 @@
 <?php
-namespace App\Interfaces;
+namespace App\Interface;
 
 interface SockableInterface {
 	// public function wearSocks();

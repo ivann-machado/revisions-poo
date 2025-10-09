@@ -1,11 +1,9 @@
 <?php
 namespace App\Abstract;
 use DateTime;
-use App\Category;
-use App\Database;
 
 abstract class AbstractProduct  {
-	protected int $id;
+	protected ?int $id;
 	protected int $category_id;
 	protected string $name;
 	protected array $photo;
@@ -16,7 +14,7 @@ abstract class AbstractProduct  {
 	protected DateTime $updatedAt;
 
 
-	function __construct(int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
+	function __construct(?int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
 		$this->hydrate([
 			'id' => $id,
 			'category_id' => $category_id,
@@ -34,7 +32,7 @@ abstract class AbstractProduct  {
 		return $this->id;
 	}
 
-	public function setId(int $id): void {
+	public function setId(?int $id): void {
 		$this->id = $id;
 	}
 
@@ -123,11 +121,11 @@ abstract class AbstractProduct  {
 		}
 	}
 
-	abstract public function findOneById(int $id): Bool|Product;
+	abstract public function findOneById(int $id): Bool|Self;
 
 	abstract public static function findAll(): array;
 
-	public function create(): bool|Product {
+	public function create(): bool|Self {
 		$pdo = Database::connect();
 		$stmt = $pdo->prepare('INSERT INTO `product` (`category_id`, `name`, `photo`, `price`, `description`, `quantity`, `createdAt`, `updatedAt`) VALUES (:category_id, :name, :photo, :price, :description, :quantity, :createdAt, :updatedAt)');
 		$result = $stmt->execute([
@@ -137,8 +135,8 @@ abstract class AbstractProduct  {
 			'price' => $this->price,
 			'description' => $this->description,
 			'quantity' => $this->quantity,
-			'createdAt' => $this->createdAt->format('d-m-Y H:i:s'),
-			'updatedAt' => $this->updatedAt->format('d-m-Y H:i:s')
+			'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+			'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
 		]);
 
 		if ($result) {

@@ -2,8 +2,7 @@
 namespace App;
 use DateTime;
 use App\Abstract\AbstractProduct;
-use App\Interfaces\SockableInterface;
-use App\Database;
+use App\Interface\SockableInterface;
 
 class Electronic extends AbstractProduct implements SockableInterface {
 	private string $brand;

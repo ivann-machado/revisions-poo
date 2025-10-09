@@ -2,8 +2,7 @@
 namespace App;
 use DateTime;
 use App\Abstract\AbstractProduct;
-use App\Interfaces\SockableInterface;
-use App\Database;
+use App\Interface\SockableInterface;
 
 class Clothing extends AbstractProduct implements SockableInterface {
 	private string $size;
@@ -54,7 +53,7 @@ class Clothing extends AbstractProduct implements SockableInterface {
 	}
 
 	public function create(): Bool|Clothing {
-		if(parent::create() instanceof Product) {
+		if(parent::create() instanceof AbstractProduct) {
 			$pdo = Database::connect();
 			$req = $pdo->prepare('INSERT INTO clothing (product_id, size, color, type, material_fee) VALUES (:product_id, :size, :color, :type, :material_fee)');
 			$params = [

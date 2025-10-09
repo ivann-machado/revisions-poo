@@ -1,6 +1,6 @@
 <?php
 	class Product  {
-		private int $id;
+		private ?int $id;
 		private int $category_id;
 		private string $name;
 		private array $photo;
@@ -11,7 +11,7 @@
 		private DateTime $updatedAt;
 
 
-		function __construct(int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
+		function __construct(?int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
 			$this->id = $id;
 			$this->category_id = $category_id;
 			$this->name = $name;
