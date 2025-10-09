@@ -1,5 +1,5 @@
 <?php
-class Clothing extends Product {
+class Clothing extends AbstractProduct {
 	private string $size;
 	private string $color;
 	private string $type;
