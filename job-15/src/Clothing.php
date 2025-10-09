@@ -113,9 +113,9 @@ class Clothing extends AbstractProduct implements SockableInterface {
 		return $this;
 	}
 
-	public function removeStocks(): self {
+	public function removeStocks(int $quantity): self {
 		if ($this->quantity > 0) {
-			$this->quantity -= 1;
+			$this->quantity -= $quantity;
 			$this->update();
 		}
 		return $this;

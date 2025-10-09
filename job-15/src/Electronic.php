@@ -33,13 +33,13 @@ class Electronic extends AbstractProduct implements SockableInterface {
 	}
 
 	public function create(): Bool|Electronic {
-		if(parent::create() instanceof Product) {
+		if(parent::create() instanceof AbstractProduct) {
 			$pdo = Database::connect();
 			$req = $pdo->prepare('INSERT INTO electronic (product_id, brand, warranty_fee) VALUES (:product_id, :brand, :warranty_fee)');
 			$params = [
-				'product_id' => $this->$id,
-				'brand' => $this->$brand,
-				'warranty_fee' => $this->$warranty_fee
+				'product_id' => $this->id,
+				'brand' => $this->brand,
+				'warranty_fee' => $this->warranty_fee
 			];
 			if($req->execute($params)) {
 				return $this;
@@ -90,9 +90,9 @@ class Electronic extends AbstractProduct implements SockableInterface {
 		return $this;
 	}
 
-	public function removeStocks(): self {
+	public function removeStocks(int $quantity): self {
 		if ($this->quantity > 0) {
-			$this->quantity -= 1;
+			$this->quantity -= $quantity;
 			$this->update();
 		}
 		return $this;

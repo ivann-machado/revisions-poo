@@ -20,7 +20,7 @@ abstract class AbstractProduct  {
 			'id' => $id,
 			'category_id' => $category_id,
 			'name' => $name,
-			'photo' => $photo,
+			'photo' => $photo ?? [],
 			'price' => $price,
 			'description' => $description,
 			'quantity' => $quantity,
@@ -57,7 +57,10 @@ abstract class AbstractProduct  {
 		return $this->photo;
 	}
 
-	public function setPhoto(array $photo): void {
+	public function setPhoto(string|array $photo): void {
+		if (is_string($photo)) {
+			$photo = explode(',', $photo);
+		}
 		$this->photo = $photo;
 	}
 
@@ -89,7 +92,10 @@ abstract class AbstractProduct  {
 		return $this->createdAt;
 	}
 
-	public function setCreatedAt(DateTime $createdAt): void {
+	public function setCreatedAt(string|DateTime $createdAt): void {
+		if (is_string($createdAt)) {
+			$createdAt = new DateTime($createdAt);
+		}
 		$this->createdAt = $createdAt;
 	}
 
@@ -97,7 +103,10 @@ abstract class AbstractProduct  {
 		return $this->updatedAt;
 	}
 
-	public function setUpdatedAt(DateTime $updatedAt): void {
+	public function setUpdatedAt(string|DateTime $updatedAt): void {
+		if (is_string($updatedAt)) {
+			$updatedAt = new DateTime($updatedAt);
+		}
 		$this->updatedAt = $updatedAt;
 	}
 
@@ -115,9 +124,11 @@ abstract class AbstractProduct  {
 
 	protected function hydrate(array $data): void {
 		foreach ($data as $key => $value) {
-			$method = 'set' . ucfirst($key);
-			if (method_exists($this, $method)) {
-				$this->$method($value);
+			if ($value !== null) {
+				$method = 'set' . ucfirst($key);
+				if (method_exists($this, $method)) {
+					$this->$method($value);
+				}
 			}
 		}
 	}
@@ -158,8 +169,8 @@ abstract class AbstractProduct  {
 			'price' => $this->price,
 			'description' => $this->description,
 			'quantity' => $this->quantity,
-			'createdAt' => $this->createdAt->format('d-m-Y H:i:s'),
-			'updatedAt' => $this->updatedAt->format('d-m-Y H:i:s')
+			'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+			'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
 		]);
 	}
 }
