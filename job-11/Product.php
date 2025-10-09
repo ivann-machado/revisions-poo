@@ -1,14 +1,14 @@
 <?php
 	class Product  {
-		private int $id;
-		private int $category_id;
-		private string $name;
-		private array $photo;
-		private int $price;
-		private string $description;
-		private int $quantity;
-		private DateTime $createdAt;
-		private DateTime $updatedAt;
+		protected int $id;
+		protected int $category_id;
+		protected string $name;
+		protected array $photo;
+		protected int $price;
+		protected string $description;
+		protected int $quantity;
+		protected DateTime $createdAt;
+		protected DateTime $updatedAt;
 
 
 		function __construct(int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
@@ -109,7 +109,7 @@
 			return null;
 		}
 
-		private function hydrate(array $data): void {
+		protected function hydrate(array $data): void {
 			foreach ($data as $key => $value) {
 				$method = 'set' . ucfirst($key);
 				if (method_exists($this, $method)) {
