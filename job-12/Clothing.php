@@ -46,5 +46,59 @@ class Clothing extends Product {
 	public function setMaterial_fee(int $material_fee): void {
 		$this->material_fee = $material_fee;
 	}
+
+	public function create(): Bool|Clothing {
+		if(parent::create() instanceof Product) {
+			$pdo = Database::connect();
+			$req = $pdo->prepare('INSERT INTO clothing (product_id, size, color, type, material_fee) VALUES (:product_id, :size, :color, :type, :material_fee)');
+			$params = [
+				'product_id' => $this->id,
+				'size' => $this->size,
+				'color' => $this->color,
+				'type' => $this->type,
+				'material_fee' => $this->material_fee
+			];
+			if($req->execute($params)) {
+				return $this;
+			}
+			return false;
+	}
+
+	public function update(): void {
+		parent::update();
+		$pdo = Database::connect();
+		$stmt = $pdo->prepare('UPDATE clothing SET size = :size, color = :color, type = :type, material_fee = :material_fee WHERE product_id = :product_id');
+		$stmt->execute([
+			'product_id' => $this->id,
+			'size' => $this->size,
+			'color' => $this->color,
+			'type' => $this->type,
+			'material_fee' => $this->material_fee
+		]);
+	}
+
+	public function findOneById(int $id): Bool|Clothing {
+		$pdo = Database::connect();
+		$stmt = $pdo->prepare('SELECT p.*, c.size, c.color, c.type, c.material_fee FROM product p JOIN clothing c ON p.id = c.product_id WHERE p.id = :id');
+		$stmt->execute(['id' => $id]);
+		$result = $stmt->fetch();
+
+		if ($result) {
+			$this->hydrate($result);
+			return $this;
+		}
+		return false;
+	}
+
+	public static function findAll(): array {
+		$pdo = Database::connect();
+		$stmt = $pdo->query('SELECT p.*, c.size, c.color, c.type, c.material_fee FROM product p JOIN clothing c ON p.id = c.product_id');
+		$results = $stmt->fetchAll();
+		$clothings = [];
+		foreach ($results as $result) {
+			$clothings[] = new Clothing($result['size'], $result['color'], $result['type'], $result['material_fee'], $result['id'], $result['category_id'], $result['name'], explode(',', $result['photo']), $result['price'], $result['description'], $result['quantity'], new DateTime($result['createdAt']), new DateTime($result['updatedAt']));
+		}
+		return $clothings;
+	}
 }
 ?>
