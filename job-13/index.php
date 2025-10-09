@@ -2,6 +2,9 @@
 require './Database.php';
 require './Category.php';
 require './AbstractProduct.php';
+require './Clothing.php';
+require './Electronic.php';
+require './SockableInterface.php';
 
 $pdo = Database::connect();
 
