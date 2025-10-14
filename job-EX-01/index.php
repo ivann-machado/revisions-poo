@@ -13,14 +13,14 @@ require 'vendor/autoload.php';
 // $cloth->update();
 // var_dump($cloth);
 
-// $cloth = new Electronic('DELL', 300, null, 2, 'locomputa', [], 10, 'le locomputa', 50, new DateTime(), new DateTime());
+$cloth = new Electronic('ASUS', 350, null, 2, 'hicomputa', [], 10, 'le hicomputa', 50, new DateTime(), new DateTime());
 // var_dump($cloth->create());
 
-$cloth = new Electronic();
-$cloth->findOneById(5);
-$cloth->addStocks(10);
-$cloth->removeStocks(5);
-$cloth->update();
+// $cloth = new Electronic();
+// $cloth->findOneById(5);
+// $cloth->addStocks(10);
+// $cloth->removeStocks(5);
+$cloth->save();
 // $cloth->findOneById(6)->setName('supacomputa 3000X');
 // $cloth->update();
 // var_dump($cloth);

@@ -2,6 +2,7 @@
 namespace App\Abstract;
 use DateTime;
 use App\Database;
+use reflectionProperty;
 
 abstract class AbstractProduct  {
 	protected ?int $id;
@@ -17,7 +18,7 @@ abstract class AbstractProduct  {
 
 	function __construct(?int $id = null, int $category_id = null, string $name = null, array $photo = null, int $price = null, string $description = null, int $quantity = null, DateTime $createdAt = null, DateTime $updatedAt = null) {
 		$this->hydrate([
-			'id' => $id,
+			'id' => $id ?? -1,
 			'category_id' => $category_id,
 			'name' => $name,
 			'photo' => $photo ?? [],
@@ -138,6 +139,9 @@ abstract class AbstractProduct  {
 	abstract public static function findAll(): array;
 
 	public function create(): bool|Self {
+		if ($this->id) {
+			return false;
+		}
 		$pdo = Database::connect();
 		$stmt = $pdo->prepare('INSERT INTO `product` (`category_id`, `name`, `photo`, `price`, `description`, `quantity`, `createdAt`, `updatedAt`) VALUES (:category_id, :name, :photo, :price, :description, :quantity, :createdAt, :updatedAt)');
 		$result = $stmt->execute([
@@ -172,6 +176,16 @@ abstract class AbstractProduct  {
 			'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
 			'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
 		]);
+	}
+
+	// public abstract function save(): bool|Self;
+
+	public function save(): bool|Self {
+		if ($this->id > -1) {
+			$this->update();
+			return $this;
+		}
+		return $this->create();
 	}
 }
 ?>
