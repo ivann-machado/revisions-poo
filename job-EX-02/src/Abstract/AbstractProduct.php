@@ -3,8 +3,9 @@ namespace App\Abstract;
 use DateTime;
 use App\Database;
 use reflectionProperty;
+use App\Interface\EntityInterface;
 
-abstract class AbstractProduct  {
+abstract class AbstractProduct implements EntityInterface {
 	protected ?int $id;
 	protected int $category_id;
 	protected string $name;
